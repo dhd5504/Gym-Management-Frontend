@@ -1,7 +1,6 @@
 # Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
+ITSS_Backend: 
+https://github.com/dhd5504/Gym-Management-Backend
 ## Available Scripts
 
 In the project directory, you can run:
