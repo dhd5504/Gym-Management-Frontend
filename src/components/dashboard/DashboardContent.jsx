@@ -10,14 +10,22 @@ const DashboardContent = () => {
   const [registrationList, setRegistrationList] = useState([]);
   const [thisMonthProfit, setThisMonthProfit] = useState(0);
   useEffect(() => {
-    fetchData();
-  }, []);
+    let isMounted = true; // cờ kiểm tra mounted
 
-  const fetchData = async () => {
-    let result = await fetch("http://localhost:8080/api/registrations");
-    result = await result.json();
-    setRegistrationList(result);
-  };
+    const fetchData = async () => {
+      let result = await fetch("http://localhost:8080/api/registrations");
+      result = await result.json();
+      if (isMounted) {
+        // chỉ cập nhật state nếu component còn mount
+        setRegistrationList(result);
+      }
+    };
+
+    fetchData();
+  return () => {
+      isMounted = false; // cleanup khi component unmount
+    };
+  }, []);
 
   return (
     <div className="">
@@ -42,7 +50,7 @@ const DashboardContent = () => {
             Current number of subscriptions
           </h3>
           <div className="flex items-center">
-            <span className="font-bold text-3xl mr-2">48 people</span>
+            <span className="font-bold text-3xl mr-2">132 people</span>
           </div>
           <BarChart />
         </div>

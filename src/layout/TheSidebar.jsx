@@ -14,7 +14,7 @@ const TheSidebar = () => {
 
   const adminManagement = ["gym", "membership", "facility", "staff", "member"];
   const staffManagement = ["member", "membership", "feedback"];
-  const trainerManagement = ["member"];
+  const trainerManagement = ["member", "feedback"];
   const memberManagement = [
     "feedback",
     "history",
@@ -52,6 +52,7 @@ const TheSidebar = () => {
         )}
         {management[`${role}Management`]?.map((subject) => (
           <Link
+            key={subject} //Thêm key ở đây
             to={`/${role}/${subject}`}
             className="pb-3 border-b-2 border-gray-200"
           >
