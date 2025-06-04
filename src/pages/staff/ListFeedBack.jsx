@@ -4,7 +4,7 @@ import { BsTrashFill } from "react-icons/bs";
 import { IoIosAddCircle } from "react-icons/io";
 
 import { Link } from "react-router-dom";
-import MemberInfoForm from "./MemberInfoForm";
+// import MemberInfoForm from "./MemberInfoForm";
 import DeletePopup from "./DeletePopup";
 import FeedbackDetail from "./FeedbackDetail";
 

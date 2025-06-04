@@ -13,7 +13,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 // import LoginRedirect from "./components/auth/LoginRedirect";
 import RegisterRedirect from "./components/auth/RegisterRedirect";
 // import DashboardRedirect from "./components/auth/DashboardRedirect";
-import HomeRedirect from "./components/auth/HomeRedirect";
+// import HomeRedirect from "./components/auth/HomeRedirect";
 
 // import MemberHistory from "./pages/member/history";
 import ListMember from "./pages/staff/ListMember";
@@ -71,7 +71,7 @@ const App = () => {
       {/* {!isAdmin && <MainNavigation />} */}
       <AnimatePresence exitBeforeEnter>
         <Routes location={location} key={location.pathname}>
-          <Route element={<HomeRedirect />}></Route>
+          {/* <Route element={<HomeRedirect />}></Route> */}
 
           <Route>
             <Route path="/" element={<Login />} />

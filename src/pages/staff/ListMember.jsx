@@ -4,10 +4,12 @@ import { BsTrashFill } from "react-icons/bs";
 import { IoIosAddCircle } from "react-icons/io";
 
 import { Link, useNavigate } from "react-router-dom";
-import MemberInfoForm from "./MemberInfoForm";
+// import MemberInfoForm from "./MemberInfoForm";
 import DeletePopup from "./DeletePopup";
 import { MdCardMembership } from "react-icons/md";
 import AddMembershipForm from "./AddMembershipForm";
+import AddMemberForm from "../../components/forms/AddMemberForm";
+import UpdateMemberForm from "../../components/forms/UpdateMemberForm";
 
 const ListMember = (props) => {
   const [searchInput, setSearchInput] = useState("");
@@ -167,7 +169,7 @@ const ListMember = (props) => {
         </div>
       </div>
 
-      {openModal && updatedMemberId && (
+      {/* {openModal && updatedMemberId && (
         <MemberInfoForm
           setOpenModal={setOpenModal}
           setUpdatedMemberId={setUpdatedMemberId}
@@ -186,6 +188,18 @@ const ListMember = (props) => {
           setMemberList2={setMemberList2}
           fetchData={fetchData}
         />
+      )} */}
+      {openModal && updatedMemberId ? (
+        <UpdateMemberForm
+          setOpenModal={setOpenModal}
+          setUpdatedMemberId={setUpdatedMemberId}
+          member={memberList.find((e) => e.memberId === updatedMemberId)}
+          fetchData={fetchData}
+        />
+      ) : (
+        openModal && (
+          <AddMemberForm setOpenModal={setOpenModal} fetchData={fetchData} />
+        )
       )}
 
       {openAddMembershipForm && (
