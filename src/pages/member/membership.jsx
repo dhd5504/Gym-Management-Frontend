@@ -1,6 +1,5 @@
 import React from "react";
 
-import ProductItem from "./ProductItem";
 import { AiOutlineUnorderedList, AiFillEdit } from "react-icons/ai";
 import { BsTrashFill } from "react-icons/bs";
 import { IoIosAddCircle } from "react-icons/io";
@@ -40,7 +39,10 @@ const MembershipHistory = (props) => {
         </Link> */}
       </div>
       {histories?.map((his) => (
-        <div className="bg-white mx-4 p-8 shadow-lg space-y-12">
+        <div
+          key={his.id || his.membershipId}
+          className="bg-white mx-4 p-8 shadow-lg space-y-12"
+        >
           <div className="flex space-x-6 border border-white rounded-lg shadow-lg p-4 items-center">
             <div className="overflow-hidden cursor-pointer">
               <img

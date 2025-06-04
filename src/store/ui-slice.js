@@ -5,7 +5,9 @@ const initialState = {
   productDetailLoading: false,
   productsLoading: false,
   loginLoading: false,
+  loginError: null, // Thêm state lưu lỗi login
   registerLoading: false,
+  registerError: null, // Thêm state lưu lỗi register
   addPrductLoading: false,
   updateProductLoading: false,
 };
@@ -17,23 +19,19 @@ const uiSlice = createSlice({
     toggleView(state) {
       state.gridView = !state.gridView;
     },
-    pDetailLoading(state) {
-      state.productDetailLoading = !state.productDetailLoading;
+
+    loginLoading(state, action) {
+      // Nhận payload true/false thay vì toggle
+      state.loginLoading = action.payload;
     },
-    productsLoading(state) {
-      state.productsLoading = !state.productsLoading;
+    setLoginError(state, action) {
+      state.loginError = action.payload;
     },
-    loginLoading(state) {
-      state.loginLoading = !state.loginLoading;
+    registerLoading(state, action) {
+      state.registerLoading = action.payload;
     },
-    registerLoading(state) {
-      state.registerLoading = !state.registerLoading;
-    },
-    addPrductLoading(state) {
-      state.addPrductLoading = !state.addPrductLoading;
-    },
-    updateProductLoading(state) {
-      state.updateProductLoading = !state.updateProductLoading;
+    setRegisterError(state, action) {
+      state.registerError = action.payload;
     },
   },
 });

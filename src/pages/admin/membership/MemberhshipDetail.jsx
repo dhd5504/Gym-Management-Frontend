@@ -26,16 +26,16 @@ const MemberhshipDetail = () => {
 
   const formik = useFormik({
     initialValues: {
-      membershipName: membership.membershipName,
-      trainingTime: membership.trainingTime,
-      price: membership.price,
-      pricePerMonth: membership.pricePerMonth,
-      pricePerDay: membership.pricePerDay,
-      numberOfSession: membership.numberOfSession,
-      trainingCardType: membership.trainingCardType,
-      includingTrainer: membership.includingTrainer,
-      trainingClass: membership.trainingClass,
-      description: membership.description,
+      membershipName: membership.membershipName ?? "",
+      trainingTime: membership.trainingTime ?? "",
+      price: membership.price ?? "",
+      pricePerMonth: membership.pricePerMonth ?? "",
+      pricePerDay: membership.pricePerDay ?? "",
+      numberOfSession: membership.numberOfSession ?? "",
+      trainingCardType: membership.trainingCardType ?? "",
+      includingTrainer: membership.includingTrainer ?? false,
+      trainingClass: membership.trainingClass ?? "",
+      description: membership.description ?? "",
     },
     validationSchema: Yup.object({
       membershipName: Yup.string().required("Required"),

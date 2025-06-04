@@ -1,6 +1,5 @@
 import React from "react";
 
-import ProductItem from "./ProductItem";
 import { AiOutlineUnorderedList, AiFillEdit } from "react-icons/ai";
 import { BsTrashFill } from "react-icons/bs";
 import { IoIosAddCircle } from "react-icons/io";
@@ -21,15 +20,40 @@ const MemberHistory = (props) => {
   const product = "history";
 
   useEffect(() => {
-    api
-      .get("http://localhost:8080/api/v1/trainer")
-      .then(({ data }) => setTrainers(data));
+    let isMounted = true;
 
-    api.get("/api/trainingHistories").then(({ data }) => {
-      const filtered = data?.filter((his) => his.memberId.memberId === userId);
-      setHistories(filtered);
-    });
-  }, []);
+    const fetchTrainers = async () => {
+      try {
+        const { data } = await api.get("http://localhost:8080/api/v1/trainer");
+        if (isMounted) {
+          setTrainers(data);
+        }
+      } catch (error) {
+        console.error("Trainer API error:", error);
+      }
+    };
+
+    const fetchHistories = async () => {
+      try {
+        const { data } = await api.get("/api/trainingHistories");
+        if (isMounted) {
+          const filtered = data?.filter(
+            (his) => his.memberId.memberId === userId
+          );
+          setHistories(filtered);
+        }
+      } catch (error) {
+        console.error("History API error:", error);
+      }
+    };
+
+    fetchTrainers();
+    fetchHistories();
+
+    return () => {
+      isMounted = false; // cleanup khi component bị unmount
+    };
+  }, [userId]);
 
   return (
     <div>
@@ -71,7 +95,7 @@ const MemberHistory = (props) => {
               <span className="block text-sm font-bold text-secondary-100">
                 Trainer:{" "}
                 {
-                  trainers.find((trainer) => (history.trainerId = trainer.id))
+                  trainers.find((trainer) => history.trainerId === trainer.id)
                     ?.name
                 }
               </span>

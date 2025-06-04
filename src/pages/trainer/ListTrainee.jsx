@@ -59,22 +59,10 @@ const ListTrainee = (props) => {
   return (
     <div className="w-full flex items-center">
       <div className="w-full bg-gray-100">
-        <div className="flex items-center justify-between m-4 px-8 py-4 bg-white drop-shadow-lg">
-          <span className="text-sm text-primary mr-6">
-            <button
-              className="px-4 py-2 bg-gray-400 rounded-md flex items-center shadow-lg"
-              onClick={logoutUser}
-            >
-              <span className="inline-flex mr-3 font-bold">
-                <BiLogOutCircle />
-              </span>
-              logout
-            </button>
-          </span>
-          <h2 className="uppercase text-3xl tracking-widest font-semibold">
+        <div className="text-center mx-4 my-8 p-8 bg-white shadow-2xl drop-shadow-md">
+          <h2 className="uppercase text-4xl tracking-widest font-semibold transform">
             Trainee List
           </h2>
-          <div></div>
         </div>
         <div className="px-[16px] mt-[20px]">
           <div className="overflow-auto">
