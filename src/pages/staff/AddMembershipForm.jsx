@@ -116,7 +116,7 @@ const AddMembershipForm = ({
           </div>
           <div>
             <span>
-              <i aria-hidden="true" class="fa fa-envelope"></i>
+              <i aria-hidden="true" className="fa fa-envelope"></i>
             </span>
             <input
               name="membershipName"
@@ -124,6 +124,7 @@ const AddMembershipForm = ({
               className="w-full p-4 rounded-3xl border-solid border-2 border-slate-300"
               required
               value={membershipName}
+              onChange={(e) => setMembershipName(e.target.value)}
               onClick={() => setVisibility("")}
             />
             <select
@@ -136,6 +137,7 @@ const AddMembershipForm = ({
             >
               {membershipList.map((membership) => (
                 <option
+                  key={membership.membershipId}
                   value={membership.membershipName}
                   onClick={() => {
                     setVisibility("hidden");
@@ -149,7 +151,7 @@ const AddMembershipForm = ({
           </div>
           <div>
             <span>
-              <i aria-hidden="true" class="fa fa-envelope"></i>
+              <i aria-hidden="true" className="fa fa-envelope"></i>
             </span>
             <input
               name="registrationType"
@@ -180,6 +182,7 @@ const AddMembershipForm = ({
             >
               {trainerList.map((trainer) => (
                 <option
+                  key={trainer.id}
                   value={trainer.name}
                   onClick={() => {
                     setShowListTrainer("hidden");
@@ -192,13 +195,14 @@ const AddMembershipForm = ({
             </select>
           </div>
           <div className="h-full w-full">
-            <label for="start" className="mt-5 mr-12">
+            <label htmlFor="start" className="mt-5 mr-12">
               Start date
             </label>
             <input
               name="start"
               value={registrationDate.toLocaleDateString()}
               onFocus={() => setShowCalendar(true)}
+              readOnly
               className=" p-4 rounded-3xl border-solid border-2 border-slate-300 inline-block"
             />
             <Calendar

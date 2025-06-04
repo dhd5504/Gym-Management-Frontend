@@ -8,7 +8,7 @@ const BarChart = () => {
     datasets: [
       {
         label: "subscriptions",
-        data: [20, 18, 7, 3],
+        data: [58, 32, 17, 25],
         backgroundColor: [
           "rgba(255, 99, 132, 1)",
           "rgba(54, 162, 235, 1)",

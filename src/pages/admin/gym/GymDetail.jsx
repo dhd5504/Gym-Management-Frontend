@@ -14,12 +14,7 @@ const GymDetail = () => {
   const [gym, setGym] = useState({});
   const [facilities, setFacilities] = useState([]);
 
-  const headerCells = [
-    "Thumbnail",
-    "Name",
-    "Quantity",
-    "Warranty Date",
-  ];
+  const headerCells = ["Thumbnail", "Name", "Quantity", "Warranty Date"];
 
   useEffect(() => {
     api
@@ -54,12 +49,12 @@ const GymDetail = () => {
 
   const formik = useFormik({
     initialValues: {
-      id: gym.yogaClass?.id,
-      name: gym.yogaClass?.name,
-      maximumNumber: gym.yogaClass?.maximumNumber,
-      location: gym.yogaClass?.location,
-      employee: gym.gymStaff?.id,
-      occupied: gym.yogaClass?.occupied,
+      id: gym.yogaClass?.id ?? "",
+      name: gym.yogaClass?.name ?? "",
+      maximumNumber: gym.yogaClass?.maximumNumber ?? 0,
+      location: gym.yogaClass?.location ?? "",
+      employee: gym.gymStaff?.id ?? "",
+      occupied: gym.yogaClass?.occupied ?? false,
     },
     validationSchema: Yup.object({
       id: Yup.string().required("Required"),

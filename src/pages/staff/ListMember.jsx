@@ -175,6 +175,7 @@ const ListMember = (props) => {
           setMemberList={setMemberList}
           setMemberList2={setMemberList2}
           memberList={memberList}
+          fetchData={fetchData}
         />
       )}
       {openModal && !updatedMemberId && (
@@ -183,6 +184,7 @@ const ListMember = (props) => {
           memberList={memberList}
           setMemberList={setMemberList}
           setMemberList2={setMemberList2}
+          fetchData={fetchData}
         />
       )}
 

@@ -99,7 +99,10 @@ const MemberRegistration = () => {
       <div className="flex flex-col p-8 m-4 bg-white shadow-lg">
         <div className="font-bold text-lg">Membership history</div>
         {histories?.map((his) => (
-          <div className="bg-white mx-4 p-8 shadow-lg space-y-12">
+          <div
+            key={his.registrationId}
+            className="bg-white mx-4 p-8 shadow-lg space-y-12"
+          >
             <div className="flex space-x-6 border border-white rounded-lg shadow-lg p-4 items-center">
               <div className="overflow-hidden cursor-pointer">
                 <img

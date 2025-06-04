@@ -1,25 +1,14 @@
 import React, { useEffect } from "react";
 import { Routes, Route, useLocation, useRoutes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "./store/actions/products-actions";
 import { AnimatePresence } from "framer-motion";
 
-// import Home from "./pages/Home";
-// import About from "./pages/About";
-// import Products from "./pages/Products";
-// import ProductDetail from "./pages/ProductDetail";
-// import Cart from "./pages/Cart";
-// import Checkout from "./pages/Checkout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 // import MainNavigation from "./layout/MainNavigation";
 // import Footer from "./layout/Footer";
 import Dashboard from "./pages/dashboard/Dashboard";
-// import TheProducts from "./components/dashboard/TheProducts";
-// import AddProduct from "./components/dashboard/AddProduct";
-// import UpdateProducts from "./components/dashboard/UpdateProducts";
-// import ProductUpdate from "./components/dashboard/ProductUpdate";
 
 // import LoginRedirect from "./components/auth/LoginRedirect";
 import RegisterRedirect from "./components/auth/RegisterRedirect";
@@ -66,16 +55,16 @@ const App = () => {
   const role = useSelector((state) => state.auth.role);
   // const products = useSelector((state) => state.products.products);
 
-  useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getProducts());
+  // }, [dispatch]);
 
-  useRoutes(
-    ["staff", "admin", "owner"].map((path) => ({
-      path,
-      element: <Dashboard />,
-    }))
-  );
+  // useRoutes(
+  //   ["staff", "admin", "owner"].map((path) => ({
+  //     path,
+  //     element: <Dashboard />,
+  //   }))
+  // );
 
   return (
     <>
@@ -87,6 +76,8 @@ const App = () => {
           <Route>
             <Route path="/" element={<Login />} />
           </Route>
+
+          <Route path="/register" element={<Register />} />
 
           {role === "admin" && (
             <Route>
@@ -125,7 +116,12 @@ const App = () => {
           )}
 
           {role === "trainer" && (
-            <Route path="trainer" element={<ListTrainee />} />
+            <Route>
+              <Route path="trainer" element={<Dashboard />}>
+                <Route path="member" element={<ListTrainee />} />
+                <Route path="feedback" element={<ListFeedback />} />
+              </Route>
+            </Route>
           )}
 
           {role === "staff" && (

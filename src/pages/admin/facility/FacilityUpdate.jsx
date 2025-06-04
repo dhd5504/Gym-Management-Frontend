@@ -12,7 +12,8 @@ const FacilityUpdate = () => {
   const [facility, setFacility] = useState({});
 
   useEffect(() => {
-    api.get(`/api/v1/facility/${id}`)
+    api
+      .get(`/api/v1/facility/${id}`)
       .then((res) => {
         setFacility(res.data[0]);
       })
@@ -21,13 +22,17 @@ const FacilityUpdate = () => {
 
   const formik = useFormik({
     initialValues: {
-      facilityName: facility.facilityName,
-      type: facility.type,
-      dateOfPurchase: facility.dateOfPurchase?.slice(0, 10),
-      warrantyDate: facility.warrantyDate?.slice(0, 10),
-      origin: facility.origin,
-      quantity: facility.quantity,
-      status: facility.status,
+      facilityName: facility.facilityName ?? "",
+      type: facility.type ?? "",
+      dateOfPurchase: facility.dateOfPurchase
+        ? facility.dateOfPurchase.slice(0, 10)
+        : "",
+      warrantyDate: facility.warrantyDate
+        ? facility.warrantyDate.slice(0, 10)
+        : "",
+      origin: facility.origin ?? "",
+      quantity: facility.quantity ?? 0,
+      status: facility.status ?? "",
     },
     validationSchema: Yup.object({
       facilityName: Yup.string().required("Required"),
@@ -41,27 +46,26 @@ const FacilityUpdate = () => {
     enableReinitialize: true,
 
     onSubmit: async (values) => {
-      api.put(`/api/v1/facility/update?id=${id}`, values)
-        .then((res) => {
-          if(res.status === 200) {
-            swal({
-              title: "Success!",
-              timer: 2000,
-              text: "Facility updated successfully!",
-              icon: "success",
-              buttons: false
-            }).then(() => {
-              navigate("/admin/facility")
-            })
-          }
-        });
+      api.put(`/api/v1/facility/update?id=${id}`, values).then((res) => {
+        if (res.status === 200) {
+          swal({
+            title: "Success!",
+            timer: 2000,
+            text: "Facility updated successfully!",
+            icon: "success",
+            buttons: false,
+          }).then(() => {
+            navigate("/admin/facility");
+          });
+        }
+      });
     },
   });
 
   return (
     <div className="w-full flex">
       <div className="w-full bg-gray-100">
-          <div className="px-[50px] mt-[20px]">
+        <div className="px-[50px] mt-[20px]">
           <div>
             <div className="mx-4">
               <button

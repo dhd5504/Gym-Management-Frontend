@@ -119,7 +119,7 @@ const Staff = () => {
         <div className="px-[16px] mt-[20px]">
           <div className="overflow-auto">
             {paginated.length > 0 && (
-              <div class="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-4 gap-4">
                 {paginated.map((staff, index) => (
                   <div
                     key={staff.id}

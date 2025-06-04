@@ -15,9 +15,14 @@ function DeletePopup({
       method: `DELETE`,
       headers: { "Content-Type": "application/json" },
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Delete failed");
+        }
+        console.log("Deleted successfully");
+      })
+      .catch((error) => {
+        console.error("Delete error:", error);
       });
 
     const deletedIndex = memberList.findIndex(
@@ -39,9 +44,14 @@ function DeletePopup({
       method: `DELETE`,
       headers: { "Content-Type": "application/json" },
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Delete failed");
+        }
+        console.log("Deleted successfully");
+      })
+      .catch((error) => {
+        console.error("Delete error:", error);
       });
     const deletedIndex = histories.findIndex(
       (e) => e.registrationId === deletedRegistrationId

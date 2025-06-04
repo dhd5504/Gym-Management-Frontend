@@ -135,12 +135,12 @@ const GymUpdate = () => {
 
   const formik = useFormik({
     initialValues: {
-      id: gym.yogaClass?.id,
-      name: gym.yogaClass?.name,
-      maximumNumber: gym.yogaClass?.maximumNumber,
-      location: gym.yogaClass?.location,
-      employee: gym.gymStaff?.id,
-      occupied: gym.yogaClass?.occupied,
+      id: gym.yogaClass?.id ?? "",
+  name: gym.yogaClass?.name ?? "",
+  maximumNumber: gym.yogaClass?.maximumNumber ?? 0,
+  location: gym.yogaClass?.location ?? "",
+  employee: gym.gymStaff?.id ?? "",
+  occupied: gym.yogaClass?.occupied ?? "",
     },
     validationSchema: Yup.object({
       id: Yup.string().required("Required"),

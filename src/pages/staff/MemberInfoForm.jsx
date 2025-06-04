@@ -9,6 +9,7 @@ const MemberInfoForm = ({
   memberList,
   setMemberList,
   setMemberList2,
+  fetchData,
 }) => {
   console.log(member);
   const [name, setName] = useState(member ? member.name : "");
@@ -35,7 +36,9 @@ const MemberInfoForm = ({
     setGender(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     if (
       name &&
       email &&
@@ -45,8 +48,6 @@ const MemberInfoForm = ({
       gender &&
       birthday
     ) {
-      e.preventDefault();
-      console.log(birthday.getFullYear().toString());
       const newMember = {
         memberId: member ? member.memberId : null,
         name,
@@ -59,38 +60,33 @@ const MemberInfoForm = ({
         job,
         memberType,
       };
-      fetch(
-        `http://localhost:8080/api/members${
-          member ? "/" + member.memberId : ""
-        }`,
-        {
-          method: `${member ? "PUT" : "POST"}`,
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newMember),
+
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/members${
+            member ? "/" + member.memberId : "/add"
+          }`,
+          {
+            method: member ? "PUT" : "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newMember),
+          }
+        );
+
+        if (response.ok) {
+          console.log("Save success");
+
+          // 🔁 GỌI LẠI fetchData() để cập nhật danh sách
+          if (fetchData) await fetchData();
+
+          setOpenModal(false);
+          member && setUpdatedMemberId(0);
+        } else {
+          alert("Lưu thất bại!");
         }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-        });
-
-      setOpenModal(false);
-      member && setUpdatedMemberId(0);
-      member
-        ? setMemberList(
-            memberList.map((e) =>
-              e.memberId === member.memberId ? newMember : e
-            )
-          )
-        : setMemberList([...memberList, newMember]);
-
-      member
-        ? setMemberList2(
-            memberList.map((e) =>
-              e.memberId === member.memberId ? newMember : e
-            )
-          )
-        : setMemberList2([...memberList, newMember]);
+      } catch (error) {
+        console.error("Lỗi khi gửi dữ liệu:", error);
+      }
     }
   };
   return (
@@ -112,7 +108,7 @@ const MemberInfoForm = ({
           </div>
           <div>
             <span>
-              <i aria-hidden="true" class="fa fa-envelope"></i>
+              <i aria-hidden="true" className="fa fa-envelope"></i>
             </span>
             <input
               name="name"
@@ -125,7 +121,7 @@ const MemberInfoForm = ({
           </div>
           <div>
             <span>
-              <i aria-hidden="true" class="fa fa-envelope"></i>
+              <i aria-hidden="true" className="fa fa-envelope"></i>
             </span>
             <input
               type="email"
@@ -139,7 +135,7 @@ const MemberInfoForm = ({
           </div>
           <div>
             <span>
-              <i aria-hidden="true" class="fa fa-envelope"></i>
+              <i aria-hidden="true" className="fa fa-envelope"></i>
             </span>
             <input
               name="job"
@@ -162,7 +158,7 @@ const MemberInfoForm = ({
           </div>
           <div>
             <span>
-              <i aria-hidden="true" class="fa fa-envelope"></i>
+              <i aria-hidden="true" className="fa fa-envelope"></i>
             </span>
             <input
               name="phone"
@@ -185,8 +181,9 @@ const MemberInfoForm = ({
                   id="rd1"
                   value="Male"
                   checked={gender === "Male"}
+                  onChange={handleChange2}
                 />
-                <label for="rd1">Male</label>
+                <label htmlFor="rd1">Male</label>
               </div>
               <div className="flex gap-4">
                 <input
@@ -195,8 +192,9 @@ const MemberInfoForm = ({
                   id="rd2"
                   value="Female"
                   checked={gender === "Female"}
+                  onChange={handleChange2}
                 />
-                <label for="rd2">Female</label>
+                <label htmlFor="rd2">Female</label>
               </div>
               <div className="flex gap-4">
                 <input
@@ -205,18 +203,21 @@ const MemberInfoForm = ({
                   id="rd3"
                   value="Others"
                   checked={gender === "Others"}
+                  onChange={handleChange2}
                 />
-                <label for="rd3">Others</label>
+                <label htmlFor="rd3">Others</label>
               </div>
             </div>
           </div>
           <div className="h-full w-full">
-            <label for="birthday" className="mt-5 mr-12">
+            <label htmlFor="birthday" className="mt-5 mr-12">
               Birthday
             </label>
             <input
+              id="birthday"
               name="birthday"
               value={birthday.toLocaleDateString()}
+              readOnly
               onFocus={() => setShowCalendar(true)}
               className=" p-4 rounded-3xl border-solid border-2 border-slate-300 inline-block"
             />

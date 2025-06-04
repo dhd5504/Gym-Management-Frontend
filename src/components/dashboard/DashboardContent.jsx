@@ -9,15 +9,25 @@ import RadarChart from "../../charts/RadarChart";
 const DashboardContent = () => {
   const [registrationList, setRegistrationList] = useState([]);
   const [thisMonthProfit, setThisMonthProfit] = useState(0);
-  useEffect(() => {
-    fetchData();
-  }, []);
 
-  const fetchData = async () => {
-    let result = await fetch("http://localhost:8080/api/registrations");
-    result = await result.json();
-    setRegistrationList(result);
-  };
+  useEffect(() => {
+    let isMounted = true; // cờ kiểm tra mounted
+
+    const fetchData = async () => {
+      let result = await fetch("http://localhost:8080/api/registrations");
+      result = await result.json();
+      if (isMounted) {
+        // chỉ cập nhật state nếu component còn mount
+        setRegistrationList(result);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      isMounted = false; // cleanup khi component unmount
+    };
+  }, []);
 
   return (
     <div className="">
@@ -42,7 +52,7 @@ const DashboardContent = () => {
             Current number of subscriptions
           </h3>
           <div className="flex items-center">
-            <span className="font-bold text-3xl mr-2">48 people</span>
+            <span className="font-bold text-3xl mr-2">132 people</span>
           </div>
           <BarChart />
         </div>
@@ -73,22 +83,6 @@ const DashboardContent = () => {
           </h3>
           <DoughnutChart />
         </div>
-        {/* <div className="w-1/2 bg-white p-4">
-          <span className="text-amber-400 text-2xl">
-            <FaWallet />
-          </span>
-          <h2 className="font-bold text-xl text-gray-700">Tech shop</h2>
-          <h3 className="uppercase my-3 font-bold text-sm text-gray-400">
-            products
-          </h3>
-          <div className="flex items-center">
-            <span className="font-bold text-3xl mr-2">$24,780</span>
-            <span className="bg-red-500 rounded-full p-1 text-white text-sm font-bold align-text-top">
-              -9%
-            </span>
-          </div>
-          <RadarChart />
-        </div> */}
       </div>
     </div>
   );
