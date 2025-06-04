@@ -1,6 +1,5 @@
 import React from "react";
 
-import ProductItem from "./ProductItem";
 import { AiOutlineUnorderedList, AiFillEdit } from "react-icons/ai";
 import { BsTrashFill } from "react-icons/bs";
 import { IoIosAddCircle } from "react-icons/io";

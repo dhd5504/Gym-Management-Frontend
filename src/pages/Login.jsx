@@ -56,6 +56,8 @@ const Login = () => {
     },
   });
 
+  const error = useSelector((state) => state.ui.loginError);
+
   return (
     <motion.div
       className="min-h-screen flex items-center justify-center"
@@ -80,72 +82,82 @@ const Login = () => {
         {loading ? (
           <TheSpinner />
         ) : (
-          <form onSubmit={formik.handleSubmit}>
-            <div className="flex flex-col mb-4 space-y-1">
-              <label
-                htmlFor="username"
-                className="font-semibold tracking-wider text-blue-900"
-              >
-                Username
-              </label>
-              <div className="flex py-1">
-                <span className="flex items-center justify-center px-3 py-2 text-black bg-gray-300 border border-r-0 border-gray-300">
-                  <MdEmail />
-                </span>
-                <input
-                  type="text"
-                  name="username"
-                  id="username"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.username}
-                  className="w-full rounded-r form-input pl-2 bg-white focus:bg-gray-50"
-                  placeholder="example@domain.com"
-                />
+          <div>
+            {" "}
+            {error && (
+              <div className="mb-4 text-sm font-semibold text-red-600">
+                {error}
               </div>
-              {formik.touched.username && formik.errors.username && (
-                <p className="text-xs font-semibold text-red-600">
-                  {formik.errors.username}
-                </p>
-              )}
-            </div>
-            <div className="flex flex-col mb-4 space-y-1">
-              <label
-                htmlFor="password"
-                className="font-semibold tracking-wider text-blue-900"
-              >
-                Password
-              </label>
-              <div className="flex py-1">
-                <span className="flex items-center justify-center px-3 py-2 text-black bg-gray-300 border border-r-0 border-gray-300">
-                  <RiLockPasswordFill />
-                </span>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.password}
-                  className="w-full rounded-r pl-2 bg-white focus:bg-gray-50"
-                  placeholder="********"
-                />
+            )}
+            <form onSubmit={formik.handleSubmit}>
+              <div className="flex flex-col mb-4 space-y-1">
+                <label
+                  htmlFor="username"
+                  className="font-semibold tracking-wider text-blue-900"
+                >
+                  Username
+                </label>
+                <div className="flex py-1">
+                  <span className="flex items-center justify-center px-3 py-2 text-black bg-gray-300 border border-r-0 border-gray-300">
+                    <MdEmail />
+                  </span>
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.username}
+                    className="w-full rounded-r form-input pl-2 bg-white focus:bg-gray-50"
+                    placeholder="example@domain.com"
+                  />
+                </div>
+                {formik.touched.username && formik.errors.username && (
+                  <p className="text-xs font-semibold text-red-600">
+                    {formik.errors.username}
+                  </p>
+                )}
               </div>
-              {formik.touched.password && formik.errors.password && (
-                <p className="text-xs text-red-600">{formik.errors.password}</p>
-              )}
-            </div>
-            <hr />
-            <button
-              type="submit"
-              className="block px-4 py-2 mt-3 ml-auto border rounded-md text-primary border-primary hover:text-white hover:bg-blue-900 font-semibold transition duration-200 ease-in-out"
-            >
-              <span className="inline-flex mr-1 justify-items-center">
-                <FiLogIn />{" "}
-              </span>
-              Login
-            </button>
-          </form>
+              <div className="flex flex-col mb-4 space-y-1">
+                <label
+                  htmlFor="password"
+                  className="font-semibold tracking-wider text-blue-900"
+                >
+                  Password
+                </label>
+                <div className="flex py-1">
+                  <span className="flex items-center justify-center px-3 py-2 text-black bg-gray-300 border border-r-0 border-gray-300">
+                    <RiLockPasswordFill />
+                  </span>
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.password}
+                    className="w-full rounded-r pl-2 bg-white focus:bg-gray-50"
+                    placeholder="********"
+                  />
+                </div>
+                {formik.touched.password && formik.errors.password && (
+                  <p className="text-xs text-red-600">
+                    {formik.errors.password}
+                  </p>
+                )}
+              </div>
+              <hr />
+              <button
+                type="submit"
+                className="block px-4 py-2 mt-3 ml-auto border rounded-md text-primary border-primary hover:text-white hover:bg-blue-900 font-semibold transition duration-200 ease-in-out"
+              >
+                <span className="inline-flex mr-1 justify-items-center">
+                  <FiLogIn />{" "}
+                </span>
+                Login
+              </button>
+            </form>
+          </div>
         )}
         <p className="mt-6 text-center text-sm text-gray-500">
           Not registered?{" "}
