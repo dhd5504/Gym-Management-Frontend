@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 const MembershipHistory = (props) => {
   const [histories, setHistories] = useState([]);
   console.log(histories);
-  const product = "memberships";
+  const product = "Gym Membership Packages";
 
   useEffect(() => {
     api.get("/api/memberships").then(({ data }) => {

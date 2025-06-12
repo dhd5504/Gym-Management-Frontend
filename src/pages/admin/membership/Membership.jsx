@@ -121,7 +121,7 @@ const Membership = () => {
       <div className="w-full bg-gray-100">
         <div className="flex items-center justify-between m-4 px-8 py-4 bg-white drop-shadow-lg">
           <h2 className="uppercase text-2xl tracking-widest font-semibold">
-            Membership
+            Gym Membership Packages
           </h2>
           <div className="w-1/4">
             <SearchBox handleSearch={debounceSearchHandler} />

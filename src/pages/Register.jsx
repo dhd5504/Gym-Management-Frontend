@@ -1,209 +1,209 @@
-import React from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { motion } from "framer-motion";
-
-import { FaUserAlt } from "react-icons/fa";
-import { FiLogIn } from "react-icons/fi";
-import { RiLockPasswordFill } from "react-icons/ri";
-import { MdEmail } from "react-icons/md";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { register } from "../store/actions/auth-actions";
-import TheSpinner from "../layout/TheSpinner";
-import { useNavigate } from "react-router-dom";
-
-const containerVariants = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-    transition: { duration: 0.3 },
-  },
-  exit: {
-    x: "-100vw",
-    transition: { ease: "easeInOut" },
-  },
-};
+import React, { useState } from "react";
+import Calendar from "react-calendar";
+import { useNavigate, Link } from "react-router-dom";
+import swal from "sweetalert";
 
 const Register = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const loading = useSelector((state) => state.ui.registerLoading);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [job, setJob] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [gender, setGender] = useState("");
+  const [birthday, setBirthday] = useState(new Date());
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [showCalendar, setShowCalendar] = useState(false);
 
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      email: "",
-      password: "",
-      password_confirmation: "",
-    },
-    validationSchema: Yup.object({
-      username: Yup.string().required("Required"),
-      email: Yup.string().email("Invalid email address").required("Required"),
-      password: Yup.string().required("Required"),
-      password_confirmation: Yup.string()
-        .oneOf([Yup.ref("password"), null], "Passwords must much")
-        .required("Required"),
-    }),
-    onSubmit: async (values) => {
-      // console.log(values);
-      try {
-        console.log(values);
-        await dispatch(register(values));
-        navigate("/");
-      } catch (error) {
-        console.log(error);
+  const handleChangeDate = (value) => {
+    setBirthday(value);
+    setShowCalendar(false);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (password !== passwordConfirmation) {
+      alert("Password confirmation does not match");
+      return;
+    }
+
+    const newMember = {
+      name,
+      email,
+      job,
+      phoneNumber,
+      gender,
+      birthday,
+      age: new Date().getFullYear() - birthday.getFullYear(),
+      user: {
+        username,
+        password,
+        email,
+      },
+    };
+
+    try {
+      const response = await fetch("http://localhost:8080/api/members/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newMember),
+      });
+
+      if (response.ok) {
+        swal({
+          title: "Success!",
+          text: "You have successfully registered!",
+          icon: "success",
+          timer: 2000,
+          buttons: false,
+        }).then(() => {
+          navigate("/"); // quay lại trang login
+        });
+      } else {
+        swal({
+          title: "Registration failed",
+          text: "Please try again later.",
+          icon: "error",
+          buttons: true,
+        });
       }
-    },
-  });
+    } catch (error) {
+      console.error("Lỗi khi gửi dữ liệu:", error);
+    }
+  };
 
   return (
-    <motion.div
-      className="w-[80%] mx-auto mt-40 mb-52"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-    >
-      <div className="w-[320px] sm:w-[400px] rounded shadow-xl border-2 border-solid px-4 sm:px-8 py-20 mx-auto">
-        <h2 className="text-3xl uppercase tracking-wider font-bold text-center mb-12 select-none">
-          <span className="text-primary">Gym</span>
-          <span className="text-secondary-200">Manager</span>
-        </h2>
-        {loading ? (
-          <TheSpinner />
-        ) : (
-          <form onSubmit={formik.handleSubmit}>
-            <div className="flex flex-col space-y-1 mb-4">
-              <label
-                htmlFor="username"
-                className="font-semibold tracking-wider"
-              >
-                Name
-              </label>
-              <div className="flex py-1">
-                <span className="flex items-center justify-center border border-gray-300 border-r-0 py-2 px-3 bg-gray-300  text-black">
-                  <FaUserAlt />
-                </span>
-                <input
-                  type="text"
-                  username="username"
-                  id="username"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.name}
-                  className="form-input rounded-r w-full"
-                  placeholder="User name"
-                />
-              </div>
-              {formik.touched.username && formik.errors.username && (
-                <p className="text-xs font-semibold text-red-600">
-                  {formik.errors.username}
-                </p>
-              )}
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center py-10">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white w-[80%] max-w-4xl p-8 shadow-xl rounded-xl px-12"
+      >
+        <h2 className="text-4xl font-bold text-center mb-8">Register</h2>
+
+        <div className="grid grid-cols-2 gap-6">
+          <div className="text-xl font-semibold col-span-2 text-center">
+            Personal Info
+          </div>
+
+          <input
+            name="name"
+            placeholder="Name"
+            className="p-4 rounded-3xl border-2 border-slate-300"
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+
+          <input
+            name="job"
+            placeholder="Job"
+            className="p-4 rounded-3xl border-2 border-slate-300"
+            required
+            value={job}
+            onChange={(e) => setJob(e.target.value)}
+          />
+
+          <input
+            name="phone"
+            placeholder="Phone Number"
+            className="p-4 rounded-3xl border-2 border-slate-300"
+            required
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+          />
+
+          <input
+            id="birthday"
+            readOnly
+            value={birthday.toLocaleDateString()}
+            onFocus={() => setShowCalendar(true)}
+            className="p-4 rounded-3xl border-2 border-slate-300"
+          />
+          {showCalendar && (
+            <div className="col-span-2 flex justify-center">
+              <Calendar value={birthday} onChange={handleChangeDate} />
             </div>
-            <div className="flex flex-col space-y-1 mb-4">
-              <label htmlFor="email" className="font-semibold tracking-wider">
-                Email
-              </label>
-              <div className="flex py-1">
-                <span className="flex items-center justify-center border border-gray-300 border-r-0 py-2 px-3 bg-gray-300  text-black">
-                  <MdEmail />
-                </span>
+          )}
+
+          <div
+            className="flex justify-around"
+            onChange={(e) => setGender(e.target.value)}
+          >
+            {["Male", "Female", "Others"].map((g) => (
+              <label key={g} className="flex gap-2">
                 <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.email}
-                  className="form-input rounded-r w-full"
-                  placeholder="example@domain.com"
+                  type="radio"
+                  name="gender"
+                  value={g}
+                  checked={gender === g}
                 />
-              </div>
-              {formik.touched.email && formik.errors.email && (
-                <p className="text-xs font-semibold text-red-600">
-                  {formik.errors.email}
-                </p>
-              )}
-            </div>
-            <div className="flex flex-col space-y-1 mb-4">
-              <label
-                htmlFor="password"
-                className="font-semibold tracking-wider"
-              >
-                Password
+                {g}
               </label>
-              <div className="flex py-1">
-                <span className="flex items-center justify-center border border-gray-300 border-r-0 py-2 px-3 bg-gray-300  text-black">
-                  <RiLockPasswordFill />
-                </span>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.password}
-                  className="form-input rounded-r w-full"
-                  placeholder="********"
-                />
-              </div>
-              {formik.touched.password && formik.errors.password && (
-                <p className="text-xs text-red-600">{formik.errors.password}</p>
-              )}
-            </div>
-            <div className="flex flex-col space-y-1 mb-4">
-              <label
-                htmlFor="password_confirmation"
-                className="font-semibold tracking-wider"
-              >
-                Confirm Password
-              </label>
-              <div className="flex py-1">
-                <span className="flex items-center justify-center border border-gray-300 border-r-0 py-2 px-3 bg-gray-300  text-black">
-                  <RiLockPasswordFill />
-                </span>
-                <input
-                  type="password"
-                  name="password_confirmation"
-                  id="password_confirmation"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.password_confirmation}
-                  className="form-input rounded-r w-full"
-                  placeholder="********"
-                />
-              </div>
-              {formik.touched.password_confirmation &&
-                formik.errors.password_confirmation && (
-                  <p className="text-xs text-red-600">
-                    {formik.errors.password_confirmation}
-                  </p>
-                )}
-            </div>
-            <hr />
-            <button
-              type="submit"
-              className="px-4 py-2 block mt-3 ml-auto text-primary border border-primary hover:text-white hover:bg-primary rounded-md"
-            >
-              <span className="inline-flex justify-items-center mr-1">
-                <FiLogIn />{" "}
-              </span>
-              Sign up
-            </button>
-          </form>
-        )}
-        <p className="text-center mt-6">
-          Already have an account?{" "}
-          <Link to="/" className="text-primary">
-            Sign in
-          </Link>{" "}
-        </p>
-      </div>
-    </motion.div>
+            ))}
+          </div>
+
+          <div className="text-xl font-semibold col-span-2 text-center mt-6">
+            Account Info
+          </div>
+
+          <input
+            name="username"
+            placeholder="Username"
+            className="p-4 rounded-3xl border-2 border-slate-300"
+            required
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="p-4 rounded-3xl border-2 border-slate-300"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            className="p-4 rounded-3xl border-2 border-slate-300"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <input
+            type="password"
+            name="passwordConfirmation"
+            placeholder="Confirm Password"
+            className="p-4 rounded-3xl border-2 border-slate-300"
+            required
+            value={passwordConfirmation}
+            onChange={(e) => setPasswordConfirmation(e.target.value)}
+          />
+        </div>
+
+        <div className="flex flex-col items-center mt-10 gap-4">
+          <button
+            type="submit"
+            className="w-[50%] h-14 text-lg font-bold text-white bg-blue-500 hover:bg-blue-600 rounded-3xl transition duration-200"
+          >
+            Register
+          </button>
+
+          <p className="text-sm">
+            Already have an account?{" "}
+            <Link to="/" className="text-blue-500 underline">
+              Sign in
+            </Link>
+          </p>
+        </div>
+      </form>
+    </div>
   );
 };
 
